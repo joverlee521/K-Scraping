@@ -1,0 +1,27 @@
+{
+  "name": "K-Scraping",
+  "version": "1.0.0",
+  "description": "A full-stack application that scrapes Korean Drama news from the web!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joverlee521/K-Scraping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joverlee521/K-Scraping/issues"
+  },
+  "homepage": "https://github.com/joverlee521/K-Scraping#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.4.0"
+  }
+}

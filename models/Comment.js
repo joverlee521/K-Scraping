@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var moment = require("moment");
+moment().format();
 
 var Schema = mongoose.Schema;
 
@@ -12,8 +14,8 @@ var CommentSchema = new Schema({
         required: true
     },
     createdAt: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: moment().format("MMMM DD, YYYY hh:mm a")
     }
 });
 

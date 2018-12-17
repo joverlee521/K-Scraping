@@ -25,6 +25,16 @@ $(".comment-form").on("submit", function(event){
         if(data){
             $(that).find(".comment-author").val("");
             $(that).find(".comment-body").val("");
+            var newComment = $("<li>").addClass("list-group-item text-dark");
+            var topRow = $("<div>").addClass("row justify-content-between");
+            var author = $("<div>").addClass("col-4").html("<span><strong>" + data.author + "</strong></span>");
+            var date = $("<div>").addClass("col-6 text-right").html("<span><small>" + data.createdAt + "</small></span>");
+            topRow.append(author, date);
+            var bottomRow = $("<div>").addClass("row");
+            var comment = $("<div>").addClass("col-12").html("<p>" + data.comment + "</p>");
+            bottomRow.append(comment);
+            newComment.append(topRow, bottomRow);
+            $(that).siblings(".comment-list").append(newComment);
         }
     });
 });

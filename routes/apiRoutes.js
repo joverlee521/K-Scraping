@@ -35,9 +35,11 @@ module.exports = function(app){
             author: req.body.author
         };
         db.Comment.create(comment).then(function(dbComment){
-            return db.Article.findOneAndUpdate({_id: req.body.articleId}, {$push: { comment: dbComment._id }}, {new: true})
+            return db.Article.findOneAndUpdate({_id: req.body.articleId}, {$push: { comment: dbComment._id }}, {new: true}).populate("comment")
         }).then(function(dbArticle){
-            res.json(dbArticle);
+            var index = (dbArticle.comment.length) - 1;
+            var newComment = dbArticle.comment[index];
+            res.json(newComment);
         }).catch(function(err){
             console.log(err);
         });

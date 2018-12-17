@@ -47,7 +47,7 @@
                         <p>{{summary}}</p>
                         <button class="btn comment-btn collapsed" type="button" data-toggle="collapse" data-target="#a{{_id}}"><small>Comment</small></button>
                         <div id="a{{_id}}" class="collapse m-3">
-                            <form class="comment-form" data-id="{{_id}}">
+                            <form class="comment-form my-4" data-id="{{_id}}">
                                 <div class="form-group">
                                     <input type="text" class="form-control comment-author" placeholder="Name" required>
                                 </div>
@@ -57,11 +57,23 @@
                                 <button class="btn float-right" type="submit">Submit</button>
                             </form>
                             <br><br> 
-                            <ul class="list-group">
+                            <ul class="list-group comment-list">
                                 {{#each comment}}
                                     <li class="list-group-item text-dark">
-                                        <p>{{author}}</p>
-                                        <p>{{comment}}</p>
+                                        <div class="row justify-content-between">
+                                            <div class="col-4">
+                                                <span><strong>{{author}}</strong></span>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <span><small>{{createdAt}}</small></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <p>{{comment}}</p>
+                                            </div>
+                                        </div>
                                     </li>
                                 {{/each}}
                             </ul>

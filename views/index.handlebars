@@ -56,6 +56,15 @@
                                 </div>
                                 <button class="btn float-right" type="submit">Submit</button>
                             </form>
+                            <br><br> 
+                            <ul class="list-group">
+                                {{#each comment}}
+                                    <li class="list-group-item text-dark">
+                                        <p>{{author}}</p>
+                                        <p>{{comment}}</p>
+                                    </li>
+                                {{/each}}
+                            </ul>
                         </div>
                     </li>
                 {{/each}}

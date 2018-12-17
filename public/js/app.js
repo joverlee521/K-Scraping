@@ -9,9 +9,10 @@ $(".comment-btn").on("click", function(){
 
 $(".comment-form").on("submit", function(event){
     event.preventDefault();
-    var id = $(this).data("id");
-    var author = $(this).find(".comment-author").val();
-    var comment = $(this).find(".comment-body").val();
+    var that = this;
+    var id = $(that).data("id");
+    var author = $(that).find(".comment-author").val();
+    var comment = $(that).find(".comment-body").val();
     var commentObj = {
         articleId: id,
         author: author,
@@ -21,6 +22,9 @@ $(".comment-form").on("submit", function(event){
         type: "POST",
         data: commentObj
     }).then(function(data){
-        console.log(data);
+        if(data){
+            $(that).find(".comment-author").val("");
+            $(that).find(".comment-body").val("");
+        }
     });
 });

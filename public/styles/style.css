@@ -1,0 +1,8 @@
+.articles {
+    color: black;
+}
+
+.articles:hover {
+    color: white;
+    background-color: #544B8C;
+}

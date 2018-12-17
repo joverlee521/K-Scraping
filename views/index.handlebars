@@ -8,21 +8,58 @@
     </button>
     {{#unless bookmarks}}
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <div class="d-flex justify-content-sm-end">
-                <form class="form-inline flex-nowrap my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-                </form>
-                <ul class="navbar-nav ml-auto my-2 justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
-                    </li>
-                </ul>
-            </div>
-            
+            <ul class="navbar-nav mr-auto my-2 justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="article-search">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
     {{/unless}}
     {{#if bookmarks}}
-
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="d-flex justify-content-end">
+                <form class="form-inline flex-nowrap my-2 my-lg-0" id="bookmark-search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search Bookmarks</button>
+                </form>
+            </div>    
+        </div>
     {{/if}}
 </nav>
+<div class="container my-5">
+    <section>
+        <div class="row m-5">
+            <div class="col-12 border-bottom">
+                <h3>LATEST K-SCRAPS</h3>
+            </div>
+        </div>
+    </section>
+    <div class="row m-5">
+        <div class="col-12">
+            <ul class="accordion list-group">
+                {{#each articles}}
+                    <li class="articles list-group-item" href="{{link}}">
+                        <h5>{{headline}}</h5>
+                        <p>{{summary}}</p>
+                        <button class="btn comment-btn collapsed" type="button" data-toggle="collapse" data-target="#a{{_id}}"><small>Comment</small></button>
+                        <div id="a{{_id}}" class="collapse m-3">
+                            <form class="comment-form" data-id="{{_id}}">
+                                <div class="form-group">
+                                    <input type="text" class="form-control comment-author" placeholder="Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea rows="3" style="resize: none" class="form-control comment-body" placeholder="Comment" required></textarea>
+                                </div>
+                                <button class="btn float-right" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

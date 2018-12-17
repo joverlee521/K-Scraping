@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+        <img src="/images/icon.png" class="d-inline-block align-top" alt="k-scraps">
+        k-Scraps
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    {{#unless bookmarks}}
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="d-flex justify-content-sm-end">
+                <form class="form-inline flex-nowrap my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav ml-auto my-2 justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    {{/unless}}
+    {{#if bookmarks}}
+
+    {{/if}}
+</nav>

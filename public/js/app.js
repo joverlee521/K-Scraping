@@ -1,3 +1,4 @@
+// Takes articles returned from API call and dynamically displays them on page
 function displayArticles(headline, summary, link, id, comments){
     var newArticle = $("<li>").addClass("articles list-group-item");
     var headline = $("<h5>").text(headline);
@@ -29,6 +30,7 @@ function displayArticles(headline, summary, link, id, comments){
     submitBtn.attr("type", "submit").text("Submit");
     form.append(newName, newComment, submitBtn);
     var commentList = $("<ul>").addClass("list-group comment-list");
+    // Only appends comments if they already exist in the database
     if(comments.length > 0){
         for(var i = 0; i < comments.length; i++){
             var user = comments[i].author;
@@ -43,6 +45,8 @@ function displayArticles(headline, summary, link, id, comments){
     $("#articles-list").append(newArticle);
 }
 
+// Takes comments returned from API call and dynamically creates their display
+// Returns the new comment so it can be appended to corresponding articles
 function displayComments(user, createDate, commentBody){
     var newComment = $("<li>").addClass("list-group-item text-dark");
     var topRow = $("<div>").addClass("row justify-content-between");
@@ -56,12 +60,40 @@ function displayComments(user, createDate, commentBody){
     return newComment;
 }
 
+function deconstructData(data){
+    for(var i = 0; i < data.length; i++){
+        var headline = data[i].headline;
+        var summary = data[i].summary;
+        var link = data[i].link;
+        var id = data[i]._id;
+        var comments = data[i].comment;
+        displayArticles(headline, summary, link, id, comments);
+    }
+}
+
+// Clicking "Get Latest k-Scraps" calls on API to scrape the web for the latest articles
 $("#new-scraps-btn").on("click", function(){
     $.get("/scrape", function(data){
-        window.location = "/";
+        var foundNewArticle = false;
+        var newArticles = [];
+        for(var key in data){
+            var article = data[key];
+            if(typeof article !== "string"){
+                foundNewArticle = true;
+                newArticles.push(article);
+            }
+        }
+        if(foundNewArticle){
+            $("#articles-list").empty();
+            deconstructData(newArticles);
+        }
+        else{
+            $("#no-new-modal").modal("show");
+        }
     });
 });
 
+// Clicking "Comment" changes the background color and text color to show emphasis on current article
 $(document).on("click", ".comment-btn", function(){
     if($(this).hasClass("collapsed")){
         $(this).parent().parent().parent().css({"background-color": "white", "color": "black"});
@@ -71,6 +103,7 @@ $(document).on("click", ".comment-btn", function(){
     }
 });
 
+// Submission of a new comment on an article, posts to the database
 $(document).on("submit", ".comment-form", function(event){
     event.preventDefault();
     var that = this;
@@ -89,26 +122,24 @@ $(document).on("submit", ".comment-form", function(event){
         if(data){
             $(that).find(".comment-author").val("");
             $(that).find(".comment-body").val("");
+            // Comment returned from POST is dynamically appended to the page
             var newComment = displayComments(data.author, data.createdAt, data.comment);
             $(that).siblings(".comment-list").append(newComment);
         }
     });
 });
 
+// Clicking "Load More k-Scraps" grabs older articles from the database
+// Skips the previous articles so there are no duplicates displayed
 $("#load-more-btn").on("click", function(){
     var numOfArticles = $(".articles").length;
     $.get("/loadMore/" + numOfArticles, function(data){
-        console.log(data);
+        // If nothing is returned, modal will alert user there a no more articles to display
         if(data.length === 0){
             $("#no-articles-modal").modal("show");
+            return;
         }
-        for(var i = 0; i < data.length; i++){
-            var headline = data[i].headline;
-            var summary = data[i].summary;
-            var link = data[i].link;
-            var id = data[i]._id;
-            var comments = data[i].comment;
-            displayArticles(headline, summary, link, id, comments);
-        }
+        // Dynamically appends returned articles to page
+        deconstructData(data);
     });
 });

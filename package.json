@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/joverlee521/K-Scraping#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.4",

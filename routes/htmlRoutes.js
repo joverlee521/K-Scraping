@@ -4,6 +4,7 @@ var db = require("../models");
 module.exports = function(app){
     // Load main page
     app.get("/", function(req, res){
+        // Finds the more recent 5 articles in the database
         db.Article.find().sort({createdDate: -1}).limit(5).populate("comment").then(function(articles, err){
             if(err){
                 return console.log(err);

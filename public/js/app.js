@@ -99,6 +99,9 @@ $("#load-more-btn").on("click", function(){
     var numOfArticles = $(".articles").length;
     $.get("/loadMore/" + numOfArticles, function(data){
         console.log(data);
+        if(data.length === 0){
+            $("#no-articles-modal").modal("show");
+        }
         for(var i = 0; i < data.length; i++){
             var headline = data[i].headline;
             var summary = data[i].summary;

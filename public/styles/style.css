@@ -1,6 +1,8 @@
 body {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background-color: #9893BA;
 }
 
 .spacer {
@@ -16,8 +18,8 @@ footer {
 }
 
 .articles:hover {
-    color: white;
-    background-color: #544B8C;
+    color: white !important;
+    background-color: #544B8C !important;
 }
 
 .bookmark-btn {
@@ -39,7 +41,7 @@ footer {
 #load-more-btn, #new-scraps-btn {
     color: white;
     background-color: #544B8C;
-    border: 1px solid #544B8C
+    border: 2px solid #544B8C
 }
 
 #load-more-btn:hover, #new-scraps-btn:hover {

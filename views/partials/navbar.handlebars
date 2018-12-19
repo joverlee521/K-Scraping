@@ -6,27 +6,26 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    {{#unless bookmarks}}
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto my-2 justify-content-center">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <form class="form-inline my-2 my-lg-0" {{#if bookmarks}} id="bookmark-search" {{else}} id="article-search" {{/if}}>
+            <input class="form-control mr-sm-2" type="search" placeholder="{{#if bookmarks}} Search Bookmarks {{else}} Search {{/if}}">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav ml-auto my-2 justify-content-center">
+            {{#unless bookmarks}}
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
                 </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0" id="article-search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    {{/unless}}
-    {{#if bookmarks}}
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <div class="d-flex justify-content-end">
-                <form class="form-inline flex-nowrap my-2 my-lg-0" id="bookmark-search">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search Bookmarks</button>
-                </form>
-            </div>    
-        </div>
-    {{/if}}
+            {{/unless}}
+            {{#if loggedIn}}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/logout">Log Out</a>
+                </li>
+            {{else}}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/auth/google">Log In</a>
+                </li>
+            {{/if}}
+        </ul>
+    </div>
 </nav>

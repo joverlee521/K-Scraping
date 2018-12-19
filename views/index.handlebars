@@ -4,11 +4,17 @@
     <section>
         <div class="row justify-content-between m-5 py-2 border-bottom">
             <div class="col-sm-12 col-md-6 text-md-left text-sm-center">
-                <h3>LATEST K-SCRAPS</h3>
+                {{#if bookmarks}}
+                    <h3>{{user.username}}'s Bookmarks </h3> 
+                {{else}}
+                    <h3>LATEST K-SCRAPS</h3>
+                {{/if}}
             </div>
-            <div class="col-sm-12 col-md-4 text-md-right text-sm-center">
-                <button class="btn btn-danger" id="new-scraps-btn">Get Latest k-Scraps</button>
-            </div>
+            {{#unless bookmarks}}
+                <div class="col-sm-12 col-md-4 text-md-right text-sm-center">
+                    <button class="btn btn-danger" id="new-scraps-btn">Get Latest k-Scraps</button>
+                </div>
+            {{/unless}}
         </div>
     </section>
     <div class="row m-5">
@@ -18,11 +24,13 @@
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 text-center">
-            <button class="btn btn-lg" id="load-more-btn">Load More k-Scraps</button>
+    {{#unless bookmarks}}
+        <div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-lg" id="load-more-btn">Load More k-Scraps</button>
+            </div>
         </div>
-    </div>
+    {{/unless}}
     {{> modals}} 
 </div>
 {{> footer}}

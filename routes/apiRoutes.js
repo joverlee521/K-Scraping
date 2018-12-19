@@ -69,4 +69,15 @@ module.exports = function(app){
             res.send(articles);
         });
     });
+
+    // Update username
+    app.post("/username", function(req, res){
+        console.log(req.session.token);
+        db.User.findOneAndUpdate({oauthToken: req.session.token}, {$set: {username: req.body.username}}, {new: true})
+        .then(function(dbUser){
+            res.json(dbUser)
+        }).catch(function(err){
+            res.json(err);
+        })
+    });
 };

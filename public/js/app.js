@@ -1,6 +1,10 @@
 // Takes articles returned from API call and dynamically displays them on page
 function displayArticles(headline, summary, link, id, comments){
     var newArticle = $("<li>").addClass("articles list-group-item");
+    var bookmarkBtn = $("<button>").addClass("btn float-left mr-2 px-1 py-0 bookmark-btn");
+    bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "left", "data-original-title": "Bookmark!"});
+    var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
+    bookmarkBtn.append(bookmarkIcon);
     var headline = $("<h5>").text(headline);
     var summary = $("<p>").text(summary);
     var buttonsRow = $("<div>").addClass("row");
@@ -41,7 +45,7 @@ function displayArticles(headline, summary, link, id, comments){
         }
     }
     collapse.append(form, $("<br><br>"), commentList);
-    newArticle.append(headline, summary, buttonsRow, collapse);
+    newArticle.append(bookmarkBtn, headline, summary, buttonsRow, collapse);
     $("#articles-list").append(newArticle);
 }
 
@@ -147,5 +151,11 @@ $("#load-more-btn").on("click", function(){
         }
         // Dynamically appends returned articles to page
         deconstructArticlesArray(data);
+    });
+});
+
+$(document).ready(function(){
+    $("body").tooltip({
+        selector: "[data-toggle='tooltip']"
     });
 });

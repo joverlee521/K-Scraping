@@ -1,6 +1,9 @@
 
 {{#each articles}}
 <li class="articles list-group-item">
+    <button class="btn float-left mr-2 px-1 py-0 bookmark-btn" data-toggle="tooltip" data-placement="left" title="Bookmark!">
+        <i class="fas fa-bookmark"></i>
+    </button>
     <h5>{{headline}}</h5>
     <p>{{summary}}</p>
     <div class="row">

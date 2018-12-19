@@ -60,7 +60,8 @@ function displayComments(user, createDate, commentBody){
     return newComment;
 }
 
-function deconstructData(data){
+// Loops through an array of articles and passes each article into displayArticles function
+function deconstructArticlesArray(data){
     for(var i = 0; i < data.length; i++){
         var headline = data[i].headline;
         var summary = data[i].summary;
@@ -76,17 +77,22 @@ $("#new-scraps-btn").on("click", function(){
     $.get("/scrape", function(data){
         var foundNewArticle = false;
         var newArticles = [];
+        // Loops through the returned object and look for new articles(objects)
         for(var key in data){
             var article = data[key];
+            // If the value is not a string(not an error message), store in newArticles array
+            // Also change foundNewArticle flag to true
             if(typeof article !== "string"){
                 foundNewArticle = true;
                 newArticles.push(article);
             }
         }
+        // If new articles were found, replace currently displayed articles with new articles
         if(foundNewArticle){
             $("#articles-list").empty();
-            deconstructData(newArticles);
+            deconstructArticlesArray(newArticles);
         }
+        // If no new articles were found, display modal
         else{
             $("#no-new-modal").modal("show");
         }
@@ -140,6 +146,6 @@ $("#load-more-btn").on("click", function(){
             return;
         }
         // Dynamically appends returned articles to page
-        deconstructData(data);
+        deconstructArticlesArray(data);
     });
 });

@@ -1,3 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.spacer {
+    flex: 1;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
 .articles {
     color: black;
 }

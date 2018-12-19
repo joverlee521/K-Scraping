@@ -3,7 +3,6 @@ var Nightmare = require("nightmare");
 var nightmare = Nightmare({show: false});
 var cheerio = require("cheerio");
 var axios = require("axios");
-var mongoose = require("mongoose");
 var async = require("async");
 
 // Import all models
@@ -23,6 +22,7 @@ module.exports = function(app){
                 result.link = $(this).children("a").attr("href");
                 result.createdDate = $(this).find(".entry-date").text();
                 result.imgRef = $(this).find("img").attr("src");
+                // Stores database function as a method in an object
                 functionsObjs[i] = function(cb){
                     db.Article.create(result, function(err, dbArticle){
                         if(err){
@@ -32,6 +32,7 @@ module.exports = function(app){
                     });
                 }
             });
+            // Runs all async methods in the functions object and returns results(error or article)
             async.series(functionsObjs, function(err, results){
                 res.send(results);
             });

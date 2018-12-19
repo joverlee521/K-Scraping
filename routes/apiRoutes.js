@@ -13,6 +13,7 @@ module.exports = function(app){
     app.get("/scrape", function(req, res){
         axios.get("http://www.dramabeans.com/news/").then(function(response){
             var $ = cheerio.load(response.data);
+            var resultObjs = [];
             $(".thumb-content").each(function(){
                 var result = {};
                 result.headline = $(this).find(".post-title-thumbnail").children("a").text();
@@ -20,11 +21,15 @@ module.exports = function(app){
                 result.link = $(this).children("a").attr("href");
                 result.createdDate = $(this).find(".entry-date").text();
                 result.imgRef = $(this).find("img").attr("src");
-                db.Article.create(result).then(function(dbArticle){}).catch(function(err){
-                    console.log(err);
-                });
+                resultObjs.push(result);
             });
-            res.send("Scrape Complete");
+            db.Article.insertMany(resultObjs).then(function(articles){
+                console.log("ARTICLES " + articles);
+                res.end();
+            }).catch(function(err){
+                console.log("ERROR " + err);
+                res.end();
+            });
         });
     });
 
@@ -42,6 +47,17 @@ module.exports = function(app){
             res.json(newComment);
         }).catch(function(err){
             console.log(err);
+        });
+    });
+
+    // Load more articles
+    app.get("/loadMore/:skip", function(req, res){
+        var skipNum = parseInt(req.params.skip);
+        db.Article.find().sort({createdDate: -1}).skip(skipNum).limit(5).populate("comment").then(function(articles, err){
+            if(err){
+                return console.log(err);
+            }
+            res.send(articles);
         });
     });
 };

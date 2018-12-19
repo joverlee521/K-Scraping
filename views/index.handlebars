@@ -1,86 +1,26 @@
-<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">
-        <img src="/images/icon.png" class="d-inline-block align-top" alt="k-scraps">
-        k-Scraps
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    {{#unless bookmarks}}
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto my-2 justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0" id="article-search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    {{/unless}}
-    {{#if bookmarks}}
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <div class="d-flex justify-content-end">
-                <form class="form-inline flex-nowrap my-2 my-lg-0" id="bookmark-search">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search Bookmarks</button>
-                </form>
-            </div>    
-        </div>
-    {{/if}}
-</nav>
+
+{{> navbar}}
 <div class="container my-5">
     <section>
-        <div class="row m-5">
-            <div class="col-12 border-bottom">
+        <div class="row justify-content-between m-5 py-2 border-bottom">
+            <div class="col-sm-12 col-lg-6">
                 <h3>LATEST K-SCRAPS</h3>
+            </div>
+            <div class="col-sm-12 col-lg-4 text-right">
+                <button class="btn btn-danger" id="new-scraps-btn">Get Latest k-Scraps</button>
             </div>
         </div>
     </section>
     <div class="row m-5">
         <div class="col-12">
-            <ul class="accordion list-group">
-                {{#each articles}}
-                    <li class="articles list-group-item" href="{{link}}">
-                        <h5>{{headline}}</h5>
-                        <p>{{summary}}</p>
-                        <button class="btn comment-btn collapsed" type="button" data-toggle="collapse" data-target="#a{{_id}}"><small>Comment</small></button>
-                        <div id="a{{_id}}" class="collapse m-3">
-                            <form class="comment-form my-4" data-id="{{_id}}">
-                                <div class="form-group">
-                                    <input type="text" class="form-control comment-author" placeholder="Name" required>
-                                </div>
-                                <div class="form-group">
-                                    <textarea rows="3" style="resize: none" class="form-control comment-body" placeholder="Comment" required></textarea>
-                                </div>
-                                <button class="btn float-right" type="submit">Submit</button>
-                            </form>
-                            <br><br> 
-                            <ul class="list-group comment-list">
-                                {{#each comment}}
-                                    <li class="list-group-item text-dark">
-                                        <div class="row justify-content-between">
-                                            <div class="col-4">
-                                                <span><strong>{{author}}</strong></span>
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <span><small>{{createdAt}}</small></span>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <p>{{comment}}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                {{/each}}
-                            </ul>
-                        </div>
-                    </li>
-                {{/each}}
+            <ul class="accordion list-group" id="articles-list">
+                {{> articles}}
             </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <button class="btn btn-lg" id="load-more-btn">Load More k-Scraps</button>
         </div>
     </div>
 </div>

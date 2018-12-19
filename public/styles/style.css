@@ -6,3 +6,19 @@
     color: white;
     background-color: #544B8C;
 }
+
+.read-button, .read-button:hover{
+    color: black;
+    background-color: white;
+}
+
+#load-more-btn, #new-scraps-btn {
+    color: white;
+    background-color: #544B8C;
+    border: 1px solid #544B8C
+}
+
+#load-more-btn:hover, #new-scraps-btn:hover {
+    color: #544B8C;
+    background-color: white;
+}

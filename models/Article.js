@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var moment = require("moment");
+moment().format();
 
 var Schema = mongoose.Schema;
 
@@ -19,7 +21,7 @@ var ArticleSchema = new Schema({
         unique: true
     },
     createdDate: {
-        type: Date,
+        type: String,
         required: true
     },
     imgRef: {

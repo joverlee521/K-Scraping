@@ -1,55 +1,14 @@
-<div class="modal" tabindex="-1" role="dialog" id="no-articles-modal">
+<div class="modal" tabindex="-1" role="dialog" id="my-modal">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Oops! No more k-Scraps!</h5>
+        <h5 class="modal-title" id="modal-head"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Looks like we are completely out of k-Scraps!</p>
-        <p>Click on "Get Lates k-Scraps" to load newest k-Scraps!</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="no-new-modal">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">No New k-Scraps Found!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Looks like we have all the latest k-Scraps!</p>
-        <p>Click on "Load More k-Scraps" to see older k-Scraps</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="username-modal">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Uh oh! Something's wrong!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>The username you have choosen is either already in use or does not fit our criteria!</p>
-        <p>Usernames must be more than 2 characters and can only contain letters and numbers!</p>
+        <p id="modal-message"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -62,10 +21,13 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Your username has been successfully updated!</h5>
+        <h5 class="modal-title">Success!</h5>
+      </div>
+      <div class="modal-body">
+        <p>Your username has been successfully updated!</p>
       </div>
       <div class="modal-footer">
-        <a href="/" class="btn btn-secondary">Main Page</button>
+        <a href="/" class="btn btn-secondary">Return to Main Page</button>
       </div>
     </div>
   </div>

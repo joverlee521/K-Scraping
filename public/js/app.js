@@ -98,7 +98,9 @@ $("#new-scraps-btn").on("click", function(){
         }
         // If no new articles were found, display modal
         else{
-            $("#no-new-modal").modal("show");
+            $("#modal-head").text("No New k-Scraps Found!");
+            $("#modal-message").html("Looks like we already have the latest k-Scraps! <br> Click on 'Load More k-Scraps' to see older k-Scraps!");
+            $("#my-modal").modal("show");
         }
     });
 });
@@ -146,7 +148,9 @@ $("#load-more-btn").on("click", function(){
     $.get("/loadMore/" + numOfArticles, function(data){
         // If nothing is returned, modal will alert user there a no more articles to display
         if(data.length === 0){
-            $("#no-articles-modal").modal("show");
+            $("#modal-head").text("No More k-Scraps!");
+            $("#modal-message").html("Looks like we are out of k-Scraps! <br> Click on 'Get Latest k-Scraps' to load the newest k-Scraps!");
+            $("#my-modal").modal("show");
             return;
         }
         // Dynamically appends returned articles to page

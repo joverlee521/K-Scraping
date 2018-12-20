@@ -13,10 +13,27 @@ module.exports = function(app){
             if(err){
                 return console.log(err);
             }
-            res.render("index", {
-                articles: articles,
-                loggedIn: loggedIn
-            });
+            if(loggedIn){
+                db.User.findOne({oauthToken: req.session.token}).
+                then(function(dbUser, err){
+                    articles.forEach(function(element){
+                        Object.assign(element, {bookmarked : false});
+                        if(dbUser.bookmarks.indexOf(element._id)>= 0){
+                            element.bookmarked = true;
+                        }
+                    });
+                    return res.render("index", {
+                        articles: articles,
+                        loggedIn: loggedIn
+                    })
+                });
+            }
+            else{
+                return res.render("index", {
+                    articles: articles,
+                    loggedIn: loggedIn
+                });
+            }
         });
     });
 

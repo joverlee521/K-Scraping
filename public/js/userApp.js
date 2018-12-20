@@ -10,10 +10,21 @@ $("#new-username-form").on("submit", function(event){
     }
     else{
         $.ajax("/username", {
-            type: "POST",
+            type: "PUT",
             data: {username:username}
         }).then(function(data){
             $("#username-success-modal").modal("show");
         });
     }
+});
+
+$(document).on("click", ".bookmark-btn", function(){
+    var that = this;
+    var id = $(that).data("id");
+    $.ajax("/bookmark/" + id, {
+        type: "PUT"
+    }).then(function(){
+        $(that).tooltip("hide");
+        $(that).prop("disabled", true);
+    });
 });

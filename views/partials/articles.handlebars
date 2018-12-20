@@ -1,7 +1,10 @@
 
 {{#each articles}}
 <li class="articles list-group-item">
-    <button class="btn float-left mr-2 px-1 py-0 bookmark-btn {{#unless ../loggedIn}} d-none {{/unless}}" data-toggle="tooltip" data-placement="left" title="Bookmark!">
+    <button class="btn float-right mr-2 px-1 py-0 bookmark-btn 
+    {{#unless ../loggedIn}} d-none {{/unless}}" 
+    {{#if bookmarked}} disabled {{/if}}
+    data-placement="right" title="Bookmark!" data-id="{{_id}}">
         <i class="fas fa-bookmark"></i>
     </button>
     <h5>{{headline}}</h5>
@@ -11,7 +14,7 @@
             <a href="{{link}}" class="btn read-button"><small>Read Article</small></a>
         </div>
         <div class="col text-right">
-            <button class="btn comment-btn collapsed" data-toggle="collapse" data-target="#a{{_id}}"><small>Comment</small></button>
+            <button class="btn comment-btn collapsed" data-toggle="collapse" data-target="#a{{_id}}"><small>Comments</small></button>
         </div>
     </div>
     <div id="a{{_id}}" class="collapse m-3">

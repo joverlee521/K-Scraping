@@ -1,13 +1,16 @@
 // Takes articles returned from API call and dynamically displays them on page
-function displayArticles(headline, summary, link, id, comments, loggedIn){
+function displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn){
     var newArticle = $("<li>").addClass("articles list-group-item");
-    var bookmarkBtn = $("<button>").addClass("btn float-left mr-2 px-1 py-0 bookmark-btn");
-    if(!loggedIn){
-        bookmarkBtn.addClass("d-none");
+    if(loggedIn){
+        var bookmarkBtn = $("<button>").addClass("btn float-right mr-2 px-1 py-0 bookmark-btn");
+        bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "right", "data-original-title": "Bookmark!", "data-id": id});
+        if(bookmarked){
+            bookmarkBtn.prop("disabled", true);
+        }
+        var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
+        bookmarkBtn.append(bookmarkIcon);
+        newArticle.append(bookmarkBtn);
     }
-    bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "left", "data-original-title": "Bookmark!"});
-    var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
-    bookmarkBtn.append(bookmarkIcon);
     var headline = $("<h5>").text(headline);
     var summary = $("<p>").text(summary);
     var buttonsRow = $("<div>").addClass("row");
@@ -18,7 +21,7 @@ function displayArticles(headline, summary, link, id, comments, loggedIn){
     var commentBtnCol = $("<div>").addClass("col text-right");
     var commentBtn = $("<button>").addClass("btn comment-btn collapsed");
     commentBtn.attr({"data-toggle": "collapse", "data-target": "#a" + id});
-    commentBtn.html("<small>Comment</small>");
+    commentBtn.html("<small>Comments</small>");
     commentBtnCol.append(commentBtn);
     buttonsRow.append(readBtnCol, commentBtnCol);
     var collapse = $("<div>").addClass("collapse m-3").attr("id", "a" + id);
@@ -48,7 +51,7 @@ function displayArticles(headline, summary, link, id, comments, loggedIn){
         }
     }
     collapse.append(form, $("<br><br>"), commentList);
-    newArticle.append(bookmarkBtn, headline, summary, buttonsRow, collapse);
+    newArticle.append(headline, summary, buttonsRow, collapse);
     $("#articles-list").append(newArticle);
 }
 
@@ -75,7 +78,8 @@ function deconstructArticlesArray(data, loggedIn){
         var link = data[i].link;
         var id = data[i]._id;
         var comments = data[i].comment;
-        displayArticles(headline, summary, link, id, comments, loggedIn);
+        var bookmarked = data[i].bookmarked;
+        displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn);
     }
 }
 
@@ -154,9 +158,8 @@ $("#load-more-btn").on("click", function(){
             $("#modal-head").text("No More k-Scraps!");
             $("#modal-message").html("Looks like we are out of k-Scraps! <br> Click on 'Get Latest k-Scraps' to load the newest k-Scraps!");
             $("#my-modal").modal("show");
-            return;
         }
-        if(data[0].loggedIn){
+        else if(data[0].loggedIn){
             data.shift();
             deconstructArticlesArray(data, true);
         }
@@ -168,6 +171,7 @@ $("#load-more-btn").on("click", function(){
 
 $(document).ready(function(){
     $("body").tooltip({
-        selector: "[data-toggle='tooltip']"
+        selector: "[data-placement='right']",
+        trigger: "hover"
     });
 });

@@ -66,16 +66,28 @@ module.exports = function(app){
             if(err){
                 return console.log(err);
             }
-            if(req.session.token){
-                articles.unshift({loggedIn: true});
+            if(req.session.token && articles.length > 0){
+                db.User.findOne({oauthToken: req.session.token})
+                .then(function(dbUser, err){
+                    articles.forEach(function(element){
+                        Object.assign(element._doc, {bookmarked : false});
+                        if(dbUser.bookmarks.indexOf(element._id) >= 0){
+                            element._doc.bookmarked = true;
+                        }
+                        console.log(element);
+                    });
+                    articles.unshift({loggedIn: true});
+                    return res.send(articles);
+                })
             }
-            res.send(articles);
+            else{
+                res.send(articles);
+            }
         });
     });
 
     // Update username
-    app.post("/username", function(req, res){
-        console.log(req.session.token);
+    app.put("/username", function(req, res){
         db.User.findOneAndUpdate({oauthToken: req.session.token}, {$set: {username: req.body.username}}, {new: true})
         .then(function(dbUser){
             res.json(dbUser)
@@ -83,4 +95,22 @@ module.exports = function(app){
             res.json(err);
         })
     });
+
+    // Update User's bookmarks
+    app.put("/bookmark/:articleId", function(req, res){
+        var id = req.params.articleId;
+        var user = req.session.token;
+        db.User.findOne({oauthToken: user})
+        .then(function(dbUser){
+            if(dbUser.bookmarks.indexOf(id) >= 0){
+                return res.sendStatus(403);
+            }
+            db.User.update({oauthToken: user}, {$push: {bookmarks: id}})
+            .then(function(){
+                return res.sendStatus(200);
+            });
+        }).catch(function(err){
+            res.json(err);
+        })
+    })
 };

@@ -1,7 +1,10 @@
 // Takes articles returned from API call and dynamically displays them on page
-function displayArticles(headline, summary, link, id, comments){
+function displayArticles(headline, summary, link, id, comments, loggedIn){
     var newArticle = $("<li>").addClass("articles list-group-item");
     var bookmarkBtn = $("<button>").addClass("btn float-left mr-2 px-1 py-0 bookmark-btn");
+    if(!loggedIn){
+        bookmarkBtn.addClass("d-none");
+    }
     bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "left", "data-original-title": "Bookmark!"});
     var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
     bookmarkBtn.append(bookmarkIcon);
@@ -65,14 +68,14 @@ function displayComments(user, createDate, commentBody){
 }
 
 // Loops through an array of articles and passes each article into displayArticles function
-function deconstructArticlesArray(data){
+function deconstructArticlesArray(data, loggedIn){
     for(var i = 0; i < data.length; i++){
         var headline = data[i].headline;
         var summary = data[i].summary;
         var link = data[i].link;
         var id = data[i]._id;
         var comments = data[i].comment;
-        displayArticles(headline, summary, link, id, comments);
+        displayArticles(headline, summary, link, id, comments, loggedIn);
     }
 }
 
@@ -153,8 +156,13 @@ $("#load-more-btn").on("click", function(){
             $("#my-modal").modal("show");
             return;
         }
-        // Dynamically appends returned articles to page
-        deconstructArticlesArray(data);
+        if(data[0].loggedIn){
+            data.shift();
+            deconstructArticlesArray(data, true);
+        }
+        else{
+            deconstructArticlesArray(data, false);
+        }
     });
 });
 

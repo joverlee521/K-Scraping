@@ -20,10 +20,23 @@ module.exports = function(app){
         });
     });
 
+    // Load newUser page if user is signing in for the first time
     app.get("/newUser", function(req, res){
-        res.render("newUser");
+        if(req.session.token){
+            res.render("newUser");
+        }
+        // Directs to error page if not signed in
+        else{
+            res.render("error", {
+                title: "How did you get here?",
+                message: "Please go back to the main page!",
+                link: "/",
+                linkName: "Main Page"
+            });
+        }
     });
 
+    // Load user's bookmarks
     app.get("/bookmarks", function(req, res){
         if(req.session.token){
             res.render("index", {
@@ -31,11 +44,24 @@ module.exports = function(app){
                 loggedIn: true
             });
         }
+        // Directs to error page if not signed in
         else{
             res.render("error", {
                 title: "Uh oh! You're not signed in!",
-                message: "Please sign in to see your bookmarks!"
+                message: "Please sign in to see your bookmarks!",
+                link: "/auth/google",
+                imgSrc: "/images/google-sign.png"
             });
         }
+    });
+
+    // General catch for invalid urls
+    app.get("*", function(req, res){
+        res.render("error", {
+            title: "Where were you trying to go?",
+            message: "Go back home!",
+            link: "/",
+            linkName: "Main Page"
+        });
     });
 };

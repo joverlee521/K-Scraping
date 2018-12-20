@@ -28,7 +28,7 @@ footer {
     border: 1px solid #DCDBE8;
 }
 
-.bookmark-btn:hover {
+.bookmark-btn:hover:not(:disabled) {
     color: #DCDBE8;
     background: transparent;
 }
@@ -36,6 +36,13 @@ footer {
 .read-button, .read-button:hover{
     color: black;
     background-color: white;
+}
+
+.google-img {
+    max-height: 38px;
+    width: auto;
+    height: auto;
+    border: 1px solid #544B8C;
 }
 
 #load-more-btn, #new-scraps-btn {

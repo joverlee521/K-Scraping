@@ -66,6 +66,9 @@ module.exports = function(app){
             if(err){
                 return console.log(err);
             }
+            if(req.session.token){
+                articles.unshift({loggedIn: true});
+            }
             res.send(articles);
         });
     });

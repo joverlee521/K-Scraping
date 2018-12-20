@@ -28,3 +28,14 @@ $(document).on("click", ".bookmark-btn", function(){
         $(that).prop("disabled", true);
     });
 });
+
+$(document).on("click", ".delete-bookmark-btn", function(){
+    var that = this;
+    var id = $(that).data("id");
+    $.ajax("/bookmark/" + id, {
+        type: "DELETE"
+    }).then(function(){
+        $(that).tooltip("hide");
+        $(that).parent().remove();
+    });
+})

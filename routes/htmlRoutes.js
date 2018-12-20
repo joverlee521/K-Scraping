@@ -56,9 +56,17 @@ module.exports = function(app){
     // Load user's bookmarks
     app.get("/bookmarks", function(req, res){
         if(req.session.token){
-            res.render("index", {
-                bookmarks: true,
-                loggedIn: true
+            db.User.findOne({oauthToken: req.session.token}).populate("bookmarks")
+            .then(function(dbUser, err){
+                if(err){
+                    console.log(err);
+                }
+                res.render("index", {
+                    bookmarks: true,
+                    loggedIn: true,
+                    dbUser,
+                    articles: dbUser.bookmarks
+                });
             });
         }
         // Directs to error page if not signed in

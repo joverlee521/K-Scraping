@@ -174,4 +174,7 @@ $(document).ready(function(){
         selector: "[data-placement='right']",
         trigger: "hover"
     });
+    if(performance.navigation.type == 2){
+        location.reload(true);
+    }
 });

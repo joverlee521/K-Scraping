@@ -1,12 +1,18 @@
 
 {{#each articles}}
 <li class="articles list-group-item">
-    <button class="btn float-right mr-2 px-1 py-0 bookmark-btn 
-    {{#unless ../loggedIn}} d-none {{/unless}}" 
-    {{#if bookmarked}} disabled {{/if}}
-    data-placement="right" title="Bookmark!" data-id="{{_id}}">
-        <i class="fas fa-bookmark"></i>
-    </button>
+    {{#if ../loggedIn}}
+        <button data-id="{{_id}}" data-placement="right" 
+        {{#if bookmarked}} disabled {{/if}} class="btn float-right mr-2 px-1 py-0 
+        {{#if ../bookmarks}}
+            delete-bookmark-btn " title="Delete!">
+                <i class="fas fa-trash-alt"></i>
+        {{else}}
+            bookmark-btn" title="Bookmark!">
+                <i class="fas fa-bookmark"></i>
+        {{/if}}             
+        </button>
+    {{/if}}
     <h5>{{headline}}</h5>
     <p>{{summary}}</p>
     <div class="row">

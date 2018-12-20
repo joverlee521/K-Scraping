@@ -112,5 +112,16 @@ module.exports = function(app){
         }).catch(function(err){
             res.json(err);
         })
-    })
+    });
+
+    app.delete("/bookmark/:articleId", function(req, res){
+        var id = req.params.articleId;
+        var user = req.session.token;
+        db.User.findOneAndUpdate({oauthToken: user}, {$pull: {bookmarks: id}})
+        .then(function(){
+            return res.sendStatus(200);
+        }).catch(function(err){
+            res.json(err);
+        });
+    });
 };

@@ -22,13 +22,13 @@ footer {
     background-color: #544B8C !important;
 }
 
-.bookmark-btn {
+.bookmark-btn, .delete-bookmark-btn {
     color: #544B8C;
     background-color:#DCDBE8;
     border: 1px solid #DCDBE8;
 }
 
-.bookmark-btn:hover:not(:disabled) {
+.bookmark-btn:hover:not(:disabled), .delete-bookmark-btn:hover {
     color: #DCDBE8;
     background: transparent;
 }

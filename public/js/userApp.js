@@ -59,8 +59,19 @@ $(document).on("submit", ".comment-form", function(event){
         if(data){
             $(that).find(".comment-body").val("");
             // Comment returned from POST is dynamically appended to the page
-            var newComment = displayComments(data[0].author, data[0].authorId, data[0].createdAt, data[0].comment, data[1]);
+            var newComment = displayComments(data[0]._id, data[0].author, data[0].authorId, data[0].createdAt, data[0].comment, data[1]);
             $(that).siblings(".comment-list").append(newComment);
         }
     });
+});
+
+$(document).on("click", ".delete-comment-btn", function(){
+    var that = this;
+    var commentId = $(that).data("id");
+    var articleId = $(that).parents("ul").data("id");
+    $.ajax("/comment/" + commentId + "/" + articleId, {
+        type: "DELETE"
+    }).then(function(){
+        $(that).parentsUntil("ul").remove();
+    })
 });

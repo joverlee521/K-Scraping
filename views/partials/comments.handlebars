@@ -16,7 +16,7 @@
     {{#eq authorId @root.dbUser.oauthToken}}
         <div class="row">
             <div class="col text-right">
-                <button class="btn btn-outline-danger btn-sm">Delete Comment</button>
+                <button class="btn btn-outline-danger btn-sm delete-comment-btn" data-id="{{_id}}">Delete Comment</button>
             </div>    
         </div>
     {{/eq}}

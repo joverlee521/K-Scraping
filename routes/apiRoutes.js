@@ -64,6 +64,22 @@ module.exports = function(app){
         });
     });
 
+    app.delete("/comment/:commentId/:articleId", function(req, res){
+        var commentId = req.params.commentId;
+        var articleId = req.params.articleId;
+        db.Comment.deleteOne({ _id : commentId }).then(function(data, err){
+            if(err){
+                return console.log(err);
+            }
+            db.Article.updateOne({ _id: articleId}, {$pull: {comment: commentId}}).then(function(data, err){
+                if(err){
+                    return console.log(err);
+                }
+                res.sendStatus(200);
+            });
+        });
+    });
+
     // Load more articles from database
     app.get("/loadMore/:skip", function(req, res){
         // Skips the number of articles already displayed to prevent duplicates

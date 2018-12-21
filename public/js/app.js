@@ -40,7 +40,8 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
             var authorId = comments[i].authorId;
             var commentBody = comments[i].comment
             var createDate = comments[i].createdAt;
-            var existingComment = displayComments(author, authorId, createDate, commentBody, user);
+            var commentId = comments[i]._id;
+            var existingComment = displayComments(commentId, author, authorId, createDate, commentBody, user);
             commentList.append(existingComment);
         }
     }
@@ -63,7 +64,7 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
 
 // Takes comments returned from API call and dynamically creates their display
 // Returns the new comment so it can be appended to corresponding articles
-function displayComments(author, authorId, createDate, commentBody, user){
+function displayComments(commentId, author, authorId, createDate, commentBody, user){
     var newComment = $("<li>").addClass("list-group-item text-dark");
     var topRow = $("<div>").addClass("row justify-content-between");
     var authorName = $("<div>").addClass("col-4").html("<span><strong>" + author + "</strong></span>");
@@ -76,8 +77,9 @@ function displayComments(author, authorId, createDate, commentBody, user){
     if(authorId === user.oauthToken){
         var deleteRow = $("<div>").addClass("row");
         var deleteCol = $("<div>").addClass("col text-right");
-        var deleteBtn = $("<button>").addClass("btn btn-outline-danger btn-sm");
+        var deleteBtn = $("<button>").addClass("btn btn-outline-danger btn-sm delete-comment-btn");
         deleteBtn.text("Delete Comment");
+        deleteBtn.attr("data-id", commentId);
         deleteCol.append(deleteBtn);
         deleteRow.append(deleteCol);
         newComment.append(deleteRow);

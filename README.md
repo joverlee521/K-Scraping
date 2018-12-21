@@ -6,6 +6,10 @@
 
 The purpose of this project is to learn the process of web scraping and the storage of data utilizing MongoDB and Mongoose. The incorporation of Mongoose allows the establishment of associations between documents of different models, such that articles are easily displayed with their associated comments. Passport.js is included to add Google OAuth 2.0 to differentiate between individual users, supporting personalized bookmarks and comments. 
 
+### Deployment
+The application is deployed to Heroku: http://jl-kscraping.herokuapp.com
+* There may be a small delay when you first try to access the application due to the web dyno going to sleep if it receives no traffic for 30 minutes
+
 ## How To
 
 ### Main Page

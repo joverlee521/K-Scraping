@@ -146,7 +146,7 @@ $("#load-more-btn").on("click", function(){
     $.get("/loadMore/" + numOfArticles, function(data){
         console.log(data);
         // If nothing is returned, modal will alert user there a no more articles to display
-        if(data.length === 0){
+        if(data[0].length === 0){
             $("#modal-head").text("No More k-Scraps!");
             $("#modal-message").html("Looks like we are out of k-Scraps! <br> Click on 'Get Latest k-Scraps' to load the newest k-Scraps!");
             $("#my-modal").modal("show");

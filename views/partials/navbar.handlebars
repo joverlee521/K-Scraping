@@ -7,10 +7,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <form class="form-inline my-2 my-lg-0" {{#if bookmarks}} id="bookmark-search" {{else}} id="article-search" {{/if}}>
-            <input class="form-control mr-sm-2" type="search" placeholder="{{#if bookmarks}} Search Bookmarks {{else}} Search {{/if}}">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-        </form>
         <ul class="navbar-nav ml-auto my-2 justify-content-center">
             {{#unless bookmarks}}
                 <li class="nav-item">

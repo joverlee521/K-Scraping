@@ -1,6 +1,4 @@
 // External dependencies
-var Nightmare = require("nightmare");
-var nightmare = Nightmare({show: false});
 var cheerio = require("cheerio");
 var axios = require("axios");
 var async = require("async");

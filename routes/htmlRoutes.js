@@ -24,7 +24,8 @@ module.exports = function(app){
                     });
                     return res.render("index", {
                         articles: articles,
-                        loggedIn: loggedIn
+                        loggedIn: loggedIn,
+                        dbUser
                     })
                 });
             }

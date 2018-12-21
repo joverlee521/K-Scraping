@@ -76,12 +76,11 @@ module.exports = function(app){
                         }
                         console.log(element);
                     });
-                    articles.unshift({loggedIn: true});
-                    return res.send(articles);
+                    return res.send([articles, dbUser]);
                 })
             }
             else{
-                res.send(articles);
+                res.send([articles]);
             }
         });
     });

@@ -1,16 +1,7 @@
 // Takes articles returned from API call and dynamically displays them on page
-function displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn){
+function displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn, user){
     var newArticle = $("<li>").addClass("articles list-group-item");
-    if(loggedIn){
-        var bookmarkBtn = $("<button>").addClass("btn float-right mr-2 px-1 py-0 bookmark-btn");
-        bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "right", "data-original-title": "Bookmark!", "data-id": id});
-        if(bookmarked){
-            bookmarkBtn.prop("disabled", true);
-        }
-        var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
-        bookmarkBtn.append(bookmarkIcon);
-        newArticle.append(bookmarkBtn);
-    }
+    
     var headline = $("<h5>").text(headline);
     var summary = $("<p>").text(summary);
     var buttonsRow = $("<div>").addClass("row");
@@ -26,10 +17,12 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
     buttonsRow.append(readBtnCol, commentBtnCol);
     var collapse = $("<div>").addClass("collapse m-3").attr("id", "a" + id);
     var form = $("<form>").addClass("comment-form my-4").attr("data-id", id);
+    var fieldset = $("<fieldset>").prop("disabled", true);
     var newName = $("<div>").addClass("form-group");
-    var nameInput = $("<input>").addClass("form-control comment-author");
+    var nameInput = $("<input>").addClass("form-control-plaintext text-white comment-author");
     nameInput.attr({"type": "text", "placeholder": "Name"});
-    nameInput.prop("required", true);
+    nameInput.prop("readonly", true);
+    nameInput.val("Please sign in to post a comment!");
     newName.append(nameInput);
     var newComment = $("<div>").addClass("form-group");
     var commentInput = $("<textarea>").addClass("form-control comment-body");
@@ -38,7 +31,8 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
     newComment.append(commentInput);
     var submitBtn = $("<button>").addClass("btn float-right");
     submitBtn.attr("type", "submit").text("Submit");
-    form.append(newName, newComment, submitBtn);
+    fieldset.append(newName, newComment, submitBtn);
+    form.append(fieldset);
     var commentList = $("<ul>").addClass("list-group comment-list");
     // Only appends comments if they already exist in the database
     if(comments.length > 0){
@@ -51,6 +45,18 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
         }
     }
     collapse.append(form, $("<br><br>"), commentList);
+    if(loggedIn){
+        fieldset.prop("disabled", false);
+        nameInput.val(user.username);
+        var bookmarkBtn = $("<button>").addClass("btn float-right mr-2 px-1 py-0 bookmark-btn");
+        bookmarkBtn.attr({"data-toggle": "tooltip", "data-placement": "right", "data-original-title": "Bookmark!", "data-id": id});
+        if(bookmarked){
+            bookmarkBtn.prop("disabled", true);
+        }
+        var bookmarkIcon = $("<i>").addClass("fas fa-bookmark");
+        bookmarkBtn.append(bookmarkIcon);
+        newArticle.append(bookmarkBtn);
+    }
     newArticle.append(headline, summary, buttonsRow, collapse);
     $("#articles-list").append(newArticle);
 }
@@ -71,16 +77,16 @@ function displayComments(user, createDate, commentBody){
 }
 
 // Loops through an array of articles and passes each article into displayArticles function
-function deconstructArticlesArray(data, loggedIn){
-    for(var i = 0; i < data.length; i++){
-        var headline = data[i].headline;
-        var summary = data[i].summary;
-        var link = data[i].link;
-        var id = data[i]._id;
-        var comments = data[i].comment;
-        var bookmarked = data[i].bookmarked;
-        displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn);
+function deconstructArticlesArray(article, loggedIn, user){
+    for(var i = 0; i < article.length; i++){
+        var headline = article[i].headline;
+        var summary = article[i].summary;
+        var link = article[i].link;
+        var id = article[i]._id;
+        var comments = article[i].comment;
+        var bookmarked = article[i].bookmarked;
     }
+    displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn, user);
 }
 
 // Clicking "Get Latest k-Scraps" calls on API to scrape the web for the latest articles
@@ -139,7 +145,6 @@ $(document).on("submit", ".comment-form", function(event){
         data: commentObj
     }).then(function(data){
         if(data){
-            $(that).find(".comment-author").val("");
             $(that).find(".comment-body").val("");
             // Comment returned from POST is dynamically appended to the page
             var newComment = displayComments(data.author, data.createdAt, data.comment);
@@ -159,12 +164,11 @@ $("#load-more-btn").on("click", function(){
             $("#modal-message").html("Looks like we are out of k-Scraps! <br> Click on 'Get Latest k-Scraps' to load the newest k-Scraps!");
             $("#my-modal").modal("show");
         }
-        else if(data[0].loggedIn){
-            data.shift();
-            deconstructArticlesArray(data, true);
+        else if(data.length > 1){
+            deconstructArticlesArray(data[0], true, data[1]);
         }
         else{
-            deconstructArticlesArray(data, false);
+            deconstructArticlesArray(data[0], false);
         }
     });
 });

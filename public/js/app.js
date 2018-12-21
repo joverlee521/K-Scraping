@@ -74,7 +74,7 @@ function displayComments(commentId, author, authorId, createDate, commentBody, u
     var comment = $("<div>").addClass("col-12").html("<p>" + commentBody + "</p>");
     bottomRow.append(comment);
     newComment.append(topRow, bottomRow);
-    if(authorId === user.oauthToken){
+    if(user && authorId === user.oauthToken){
         var deleteRow = $("<div>").addClass("row");
         var deleteCol = $("<div>").addClass("col text-right");
         var deleteBtn = $("<button>").addClass("btn btn-outline-danger btn-sm delete-comment-btn");

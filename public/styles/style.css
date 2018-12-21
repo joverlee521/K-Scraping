@@ -3,6 +3,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: #9893BA;
+    background-image: url("../images/background.png");
 }
 
 .spacer {

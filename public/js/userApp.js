@@ -39,3 +39,28 @@ $(document).on("click", ".delete-bookmark-btn", function(){
         $(that).parent().remove();
     });
 })
+
+// Submission of a new comment on an article, posts to the database
+$(document).on("submit", ".comment-form", function(event){
+    event.preventDefault();
+    var that = this;
+    var id = $(that).data("id");
+    var author = $(that).find(".comment-author").val();
+    var comment = $(that).find(".comment-body").val();
+    var commentObj = {
+        articleId: id,
+        author: author,
+        body: comment
+    };
+    $.ajax("/comment", {
+        type: "POST",
+        data: commentObj
+    }).then(function(data){
+        if(data){
+            $(that).find(".comment-body").val("");
+            // Comment returned from POST is dynamically appended to the page
+            var newComment = displayComments(data[0].author, data[0].authorId, data[0].createdAt, data[0].comment, data[1]);
+            $(that).siblings(".comment-list").append(newComment);
+        }
+    });
+});

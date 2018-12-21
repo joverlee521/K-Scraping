@@ -16,6 +16,10 @@ var CommentSchema = new Schema({
     createdAt: {
         type: String,
         default: moment().format("MMMM DD, YYYY hh:mm a")
+    },
+    authorId: {
+        type: String,
+        required: true
     }
 });
 

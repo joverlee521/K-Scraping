@@ -13,4 +13,11 @@
             <p>{{comment}}</p>
         </div>
     </div>
+    {{#eq authorId @root.dbUser.oauthToken}}
+        <div class="row">
+            <div class="col text-right">
+                <button class="btn btn-outline-danger btn-sm">Delete Comment</button>
+            </div>    
+        </div>
+    {{/eq}}
 </li>

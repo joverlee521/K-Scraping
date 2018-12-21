@@ -3,6 +3,7 @@ require("dotenv").config();
 var express = require("express");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
+var helpers = require("handlebars-helpers");
 var passport = require("passport");
 var cookieParser = require("cookie-parser");
 var cookieSession = require("cookie-session");
@@ -16,7 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set up express handlebars
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main',
+    helpers: {
+        eq: helpers().eq
+    }
+}));
 app.set('view engine', 'handlebars');
 
 // Passport

@@ -1,7 +1,6 @@
 // Takes articles returned from API call and dynamically displays them on page
 function displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn, user){
     var newArticle = $("<li>").addClass("articles list-group-item");
-    
     var headline = $("<h5>").text(headline);
     var summary = $("<p>").text(summary);
     var buttonsRow = $("<div>").addClass("row");
@@ -37,10 +36,11 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
     // Only appends comments if they already exist in the database
     if(comments.length > 0){
         for(var i = 0; i < comments.length; i++){
-            var user = comments[i].author;
+            var author = comments[i].author;
+            var authorId = comments[i].authorId;
             var commentBody = comments[i].comment
             var createDate = comments[i].createdAt;
-            var existingComment = displayComments(user, createDate, commentBody);
+            var existingComment = displayComments(author, authorId, createDate, commentBody, user);
             commentList.append(existingComment);
         }
     }
@@ -63,16 +63,25 @@ function displayArticles(headline, summary, link, id, comments, bookmarked, logg
 
 // Takes comments returned from API call and dynamically creates their display
 // Returns the new comment so it can be appended to corresponding articles
-function displayComments(user, createDate, commentBody){
+function displayComments(author, authorId, createDate, commentBody, user){
     var newComment = $("<li>").addClass("list-group-item text-dark");
     var topRow = $("<div>").addClass("row justify-content-between");
-    var author = $("<div>").addClass("col-4").html("<span><strong>" + user + "</strong></span>");
+    var authorName = $("<div>").addClass("col-4").html("<span><strong>" + author + "</strong></span>");
     var date = $("<div>").addClass("col-6 text-right").html("<span><small>" + createDate + "</small></span>");
-    topRow.append(author, date);
+    topRow.append(authorName, date);
     var bottomRow = $("<div>").addClass("row");
     var comment = $("<div>").addClass("col-12").html("<p>" + commentBody + "</p>");
     bottomRow.append(comment);
     newComment.append(topRow, bottomRow);
+    if(authorId === user.oauthToken){
+        var deleteRow = $("<div>").addClass("row");
+        var deleteCol = $("<div>").addClass("col text-right");
+        var deleteBtn = $("<button>").addClass("btn btn-outline-danger btn-sm");
+        deleteBtn.text("Delete Comment");
+        deleteCol.append(deleteBtn);
+        deleteRow.append(deleteCol);
+        newComment.append(deleteRow);
+    }
     return newComment;
 }
 
@@ -85,8 +94,8 @@ function deconstructArticlesArray(article, loggedIn, user){
         var id = article[i]._id;
         var comments = article[i].comment;
         var bookmarked = article[i].bookmarked;
+        displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn, user);
     }
-    displayArticles(headline, summary, link, id, comments, bookmarked, loggedIn, user);
 }
 
 // Clicking "Get Latest k-Scraps" calls on API to scrape the web for the latest articles
@@ -128,36 +137,12 @@ $(document).on("click", ".comment-btn", function(){
     }
 });
 
-// Submission of a new comment on an article, posts to the database
-$(document).on("submit", ".comment-form", function(event){
-    event.preventDefault();
-    var that = this;
-    var id = $(that).data("id");
-    var author = $(that).find(".comment-author").val();
-    var comment = $(that).find(".comment-body").val();
-    var commentObj = {
-        articleId: id,
-        author: author,
-        body: comment
-    };
-    $.ajax("/comment", {
-        type: "POST",
-        data: commentObj
-    }).then(function(data){
-        if(data){
-            $(that).find(".comment-body").val("");
-            // Comment returned from POST is dynamically appended to the page
-            var newComment = displayComments(data.author, data.createdAt, data.comment);
-            $(that).siblings(".comment-list").append(newComment);
-        }
-    });
-});
-
 // Clicking "Load More k-Scraps" grabs older articles from the database
 // Skips the previous articles so there are no duplicates displayed
 $("#load-more-btn").on("click", function(){
     var numOfArticles = $(".articles").length;
     $.get("/loadMore/" + numOfArticles, function(data){
+        console.log(data);
         // If nothing is returned, modal will alert user there a no more articles to display
         if(data.length === 0){
             $("#modal-head").text("No More k-Scraps!");

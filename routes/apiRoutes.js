@@ -43,7 +43,8 @@ module.exports = function(app){
     app.post("/comment", function(req, res){
         var comment = {
             comment: req.body.body,
-            author: req.body.author
+            author: req.body.author,
+            authorId: req.session.token
         };
         // Creates comment in the database and updates correponding article
         db.Comment.create(comment).then(function(dbComment){
@@ -52,7 +53,12 @@ module.exports = function(app){
             var index = (dbArticle.comment.length) - 1;
             var newComment = dbArticle.comment[index];
             // Returns created comment to the front-end
-            res.json(newComment);
+            if(req.session.token){
+                res.json([newComment, {oauthToken : req.session.token}]);
+            }
+            else{
+                res.json([newComment]);
+            }
         }).catch(function(err){
             console.log(err);
         });
